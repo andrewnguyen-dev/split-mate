@@ -17,7 +17,6 @@
 ## Tech Stack
 - Next.js App Router, TypeScript, Tailwind CSS.
 - UI: shadcn/ui (Radix primitives) for consistent, accessible components.
-- i18n: next-intl with `[locale]` segment (en, vi) and a client LanguageToggle for instant page-wide language switch.
 - Persistence: Prisma + Neon Postgres. Server Actions for CRUD.
 - State: minimal client state with React + Zod schemas for validation.
 - Testing (optional): Vitest (logic) + Playwright (smoke flows).
@@ -67,16 +66,14 @@ model ExpenseParticipant {
 ```
 
 ## App Structure (App Router)
-- `app/[locale]/layout.tsx` – Locale provider (next-intl), header with LanguageToggle.
-- `app/[locale]/page.tsx` – Homepage: list existing trips, create new.
-- `app/[locale]/trip/[id]/page.tsx` – Trip dashboard: participants, expenses, totals, balances, transfers.
-- `app/[locale]/trip/[id]/participants/page.tsx` – Manage participants (name, weight).
-- `app/[locale]/trip/[id]/expenses/new/page.tsx` – Add expense.
-- `middleware.ts` – Detect/default locale, rewrite to `[locale]` segment.
+- `app/layout.tsx` – App shell header and providers.
+- `app/page.tsx` – Homepage: list existing trips, create new.
+- `app/trip/[id]/page.tsx` – Trip dashboard: participants, expenses, totals, balances, transfers.
+- `app/trip/[id]/participants/page.tsx` – Manage participants (name, weight).
+- `app/trip/[id]/expenses/new/page.tsx` – Add expense.
 - API via Server Actions colocated with forms/components (e.g., `createTrip`, `upsertParticipant`, `addExpense`).
 
 ## UI/UX (Mobile‑first)
-- Persistent language toggle: EN ↔ VI toggle in header; changing it updates all text instantly.
 - Homepage:
   - List trips (name, last updated). CTA: New Trip.
 - Create Trip flow:
@@ -92,21 +89,20 @@ model ExpenseParticipant {
   - Save → back to dashboard.
 
 ## User Flow
-1. User opens app; sees language toggle (EN/VI) in the header.
-2. Toggle language if desired; UI text updates immediately across the page.
-3. On the homepage, select an existing trip or tap New Trip.
-4. Enter trip name and confirm currency; proceed.
-5. Add participants: enter display name and weight per household; save.
-6. Land on trip dashboard with summary cards.
-7. Add expenses: choose payer, enter amount and details, select participating subset (Select All by default with quick All/None toggle); save.
-8. Review updated per‑participant totals and balances.
-9. Tap Calculate Transfers to generate minimal settlement suggestions.
-10. Optionally share/export the summary (future enhancement).
+1. Open app; land on the homepage.
+2. Select an existing trip or tap New Trip.
+3. Enter trip name and confirm currency; proceed.
+4. Add participants: enter display name and weight per household; save.
+5. Land on trip dashboard with summary cards.
+6. Add expenses: choose payer, enter amount and details, select participating subset (Select All by default with quick All/None toggle); save.
+7. Review updated per‑participant totals and balances.
+8. Tap Calculate Transfers to generate minimal settlement suggestions.
+9. Optionally share/export the summary (future enhancement).
 
 ## Components
-- Core: `TripCard`, `ParticipantRow`, `WeightInput`, `MoneyInput`, `ExpenseRow`, `SelectAllToggle`, `TransferItem`, `SummaryStat`, `LanguageToggle`.
+- Core: `TripCard`, `ParticipantRow`, `WeightInput`, `MoneyInput`, `ExpenseRow`, `SelectAllToggle`, `TransferItem`, `SummaryStat`.
 - shadcn/ui usage:
-  - Button, Input, Label, Select, Checkbox, Switch (for language toggle), Card, Table, Dialog/Sheet (for forms), Tabs (optional), Toast.
+  - Button, Input, Label, Select, Checkbox, Switch (optional), Card, Table, Dialog/Sheet (for forms), Tabs (optional), Toast.
 - Snackbar/toast for actions; inline field errors.
 
 ## Validation & Rounding
@@ -114,13 +110,8 @@ model ExpenseParticipant {
 - Monetary parsing/formatting with a single currency per trip (no FX in MVP).
 - Split rounding using remainder distribution as described.
 
-## Accessibility & i18n
+## Accessibility
 - Semantic form controls, large touch targets, label associations.
-- i18n with next-intl:
-  - Locales: `en`, `vi`; dictionaries live under `messages/{en,vi}.json`.
-  - Route segment `[locale]` and middleware to default locale and persist preference.
-  - `LanguageToggle` updates locale (client), triggers instant re-render with translated strings.
-- Currency formatted per trip currency using `Intl.NumberFormat(locale, {currency})`.
 
 ## Performance
 - Lightweight pages, minimal client JS; prefer server components where possible.
@@ -131,12 +122,12 @@ model ExpenseParticipant {
 - Sanitize inputs server‑side; rate‑limit not required for MVP.
 
 ## Milestones
-1. Scaffold Next.js + Tailwind; init shadcn/ui; set up next-intl with `[locale]` and LanguageToggle.
+1. Scaffold Next.js + Tailwind; init shadcn/ui.
 2. Prisma schema + migrations; DB wiring (Neon in dev/prod).
 3. Create Trip flow (name, currency, participants) + persist.
 4. Trip dashboard skeleton (server data fetch, empty states).
 5. Add Expense flow (+ split logic util).
 6. Aggregation & summary cards (paid/owed/balance).
 7. Settlement suggestions UI + algorithm.
-8. Polish mobile UX, validation, i18n coverage, tests.
+8. Polish mobile UX, validation, tests.
 9. Deploy (Vercel + Postgres) and smoke test.
