@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useEffect, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { upsertParticipantFormAction } from "@/lib/actions/participants";
 import type { ActionResult } from "@/lib/actions/helpers";
@@ -23,7 +23,10 @@ interface AddParticipantFormProps {
 const initialState: ActionResult<{ participantId: string }> = { ok: true };
 
 export function AddParticipantForm({ tripId }: AddParticipantFormProps) {
-  const [state, formAction] = useFormState(upsertParticipantFormAction, initialState);
+  const [state, formAction] = useActionState(
+    upsertParticipantFormAction,
+    initialState
+  );
 
   useEffect(() => {
     if (state.ok) {
