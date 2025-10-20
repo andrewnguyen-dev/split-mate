@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { TransferList } from "@/components/trips/transfer-list";
 import type { SettlementTransfer } from "@/lib/calculations";
 import { formatCurrency } from "@/lib/utils";
