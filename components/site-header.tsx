@@ -9,7 +9,7 @@ export function SiteHeader() {
           SplitMate
         </Link>
         <div className="flex items-center gap-3">
-          <span className="hidden text-xs font-medium uppercase text-muted-foreground sm:inline">
+          <span className="text-xs font-medium uppercase text-muted-foreground inline">
             Crafted by Andrew Nguyen
           </span>
           <ThemeToggle />
