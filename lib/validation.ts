@@ -90,4 +90,23 @@ export const expenseCreateSchema = z.object({
 
 export type ExpenseCreateInput = z.infer<typeof expenseCreateSchema>;
 
+export const expenseUpdateSchema = z.object({
+  expenseId: cuidSchema,
+  tripId: cuidSchema,
+  description: z
+    .string()
+    .trim()
+    .min(1, "Description is required")
+    .max(120, "Keep descriptions under 120 characters"),
+  amountCents: moneyInputSchema,
+  payerId: cuidSchema,
+  participantIds: z.array(cuidSchema).min(1, "Select at least one participant"),
+  date: z
+    .string()
+    .optional()
+    .transform((value) => (value ? new Date(value) : new Date())),
+});
+
+export type ExpenseUpdateInput = z.infer<typeof expenseUpdateSchema>;
+
 export const tripIdSchema = cuidSchema;

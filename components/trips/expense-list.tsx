@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
@@ -40,9 +41,17 @@ export function ExpenseList({ expenses, currency }: ExpenseListProps) {
                   {formatDate(expense.date)} &middot; Paid by {expense.payer.name}
                 </p>
               </div>
-              <Badge variant="soft" className="text-base font-semibold">
-                {formatCurrency(expense.amountCents, currency)}
-              </Badge>
+              <div className="flex items-center gap-3">
+                <Badge variant="soft" className="text-base font-semibold">
+                  {formatCurrency(expense.amountCents, currency)}
+                </Badge>
+                <Link
+                  href={`/trip/${expense.tripId}/expenses/${expense.id}/edit`}
+                  className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                >
+                  Edit
+                </Link>
+              </div>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <p className="text-xs uppercase text-muted-foreground">
