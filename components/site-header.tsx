@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteHeader() {
   return (
@@ -7,9 +8,12 @@ export function SiteHeader() {
         <Link href="/" className="text-lg font-semibold tracking-tight">
           SplitMate
         </Link>
-        <span className="text-xs font-medium uppercase text-muted-foreground">
-          Crafted by Andrew Nguyen
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="hidden text-xs font-medium uppercase text-muted-foreground sm:inline">
+            Crafted by Andrew Nguyen
+          </span>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

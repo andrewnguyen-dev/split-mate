@@ -16,6 +16,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme');
+                  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+                  var theme = stored || (mql.matches ? 'dark' : 'light');
+                  document.documentElement.dataset.theme = theme;
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={cn("min-h-screen bg-background text-foreground font-sans")}>
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
