@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -25,7 +25,9 @@ export default function RootLayout({
                   var stored = localStorage.getItem('theme');
                   var mql = window.matchMedia('(prefers-color-scheme: dark)');
                   var theme = stored || (mql.matches ? 'dark' : 'light');
-                  document.documentElement.dataset.theme = theme;
+                  if (document.documentElement.dataset.theme !== theme) {
+                    document.documentElement.dataset.theme = theme;
+                  }
                 } catch (e) {}
               })();
             `,
