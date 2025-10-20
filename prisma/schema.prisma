@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Trip {
+  id           String             @id @default(cuid())
+  name         String
+  currency     String             @default("AUD")
+  participants TripParticipant[]
+  expenses     Expense[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model TripParticipant {
+  id        String   @id @default(cuid())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  name      String
+  weight    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  paid      Expense[] @relation("ExpensePayer")
+  expenses  ExpenseParticipant[]
+}
+
+model Expense {
+  id           String @id @default(cuid())
+  tripId       String
+  trip         Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  description  String
+  amountCents  Int
+  payerId      String
+  payer        TripParticipant @relation("ExpensePayer", fields: [payerId], references: [id])
+  date         DateTime        @default(now())
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  participants ExpenseParticipant[]
+}
+
+model ExpenseParticipant {
+  expenseId     String
+  participantId String
+  expense       Expense         @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  participant   TripParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@id([expenseId, participantId])
+}
