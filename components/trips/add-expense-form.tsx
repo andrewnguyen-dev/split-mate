@@ -226,31 +226,32 @@ export function AddExpenseForm({
                 </button>
               </div>
             </div>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3">
               {participantOptions.map((participant) => {
                 const checked = participantIds.has(participant.id);
                 return (
-                  <label
+                  <button
                     key={participant.id}
+                    type="button"
+                    onClick={() => toggleParticipant(participant.id, !checked)}
                     className={cn(
-                      "flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 text-sm transition",
+                      "flex cursor-pointer rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200",
                       checked
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border bg-background text-foreground hover:border-primary/40"
+                        ? "border border-primary/50 bg-muted hover:bg-muted/90"
+                        : "border border-border bg-background text-foreground hover:bg-primary/5"
                     )}
                   >
-                    <span className="font-medium">{participant.label}</span>
+                    {participant.label}
                     <input
                       type="checkbox"
                       name="participantIds"
                       value={participant.id}
                       checked={checked}
-                      onChange={(event) =>
-                        toggleParticipant(participant.id, event.target.checked)
-                      }
-                      className="h-4 w-4"
+                      onChange={() => {}}
+                      className="sr-only"
+                      tabIndex={-1}
                     />
-                  </label>
+                  </button>
                 );
               })}
             </div>

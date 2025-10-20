@@ -93,7 +93,7 @@ export default async function TripDashboard({ params }: TripDashboardProps) {
           <p className="text-sm text-muted-foreground">Positive balances mean they are owed money.</p>
         </div>
         <ParticipantBalanceTable balances={summary.balances} currency={trip.currency} />
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground italic">
           &quot;Weight&quot; represents the number of people in a household. This prevents internal money transfers when settling up.
         </p>
       </section>
